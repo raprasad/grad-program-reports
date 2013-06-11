@@ -46,17 +46,16 @@ function shorten_url(){
 
 
 {% block main_container %}
-<!--span style="font-weight:normal">(uses the UIS validation service)</span-->
-<form method="post" action="{#% url 'view_tweet_console' %#}">
-        {% csrf_token %}
-	<table>
 
-	 <div id="url_shorten_err_msg" class="alert alert-error" style="display:none;"></div>
 
 	{% if TWEET_SUCCESS %}
 	 <div class="alert alert-success">
            Your tweet has been sent!  
     </div>
+	{% endif %}
+	
+	{% if dac_form %}
+	    {% include "dac_filter_form.html" %}
 	{% endif %}
 	
 	<table class="table table-bordered table-hover">
@@ -67,20 +66,29 @@ function shorten_url(){
             	<th>Date of<br />Meeting</th>
             	<th>Last Name</th>
             	<th>First Name</th>
-            	<th>Nominated<br /> for<br />Prize Advisor</th>
+            	<th>Nominated<br /> for<br />Prize</th>
             	<th>Advisor</th>
             	<th>Student<br />Status</th>
             </tr>
         </thead>
         <tbody>
 	{% for dm in dac_meetings %}
+	    {% ifchanged dm.meeting_type %}
+	        {% if not forloop.first %}
+            <tr>
+	            <td colspan="8">&nbsp;</td>
+            </tr>
+            {% endif %}
+	    {% endifchanged %}
 	        <tr>
 	            <td>{{ forloop.counter }}</td>
 	            <td>{{ dm.meeting_type }}</td>
 	            <td><p class="text-right">{{ dm.date|date:"n/d/Y" }}</p></td>
 	            <td>{{ dm.student.last_name }}</td>
 	            <td>{{ dm.student.first_name }}</td>
-	            <td>{% if dm.nominated_for_prize %}Yes{% else %}No{% endif %}</td>
+	            <td>{% if dm.nominated_for_prize %}<span class="label label-success">Yes</span> 
+	                {% else %} <span class="label">No</span> 
+	                {% endif %}</td>
 	            <td>{{ dm.student.get_current_advisor }}</td>
 	            <td>{{ dm.student.status }}</td>
 	        </tr>
@@ -94,39 +102,7 @@ function shorten_url(){
         </tbody>
 	</table>
 	
-    {% for field in tweet_form %}
-        <tr>    
-            <td> 
-                {{ field.label }} 
-                {% if field.name == 'link' %}
-                    <a id="lnk_shorten_url">(shorten url)</a>
-                {% endif %}
-                
-                {% if field.help_text %}({{ field.help_text|safe }}){% endif %}
-                {% if field.errors %}
-                        <br /><span class="text-error">
-                            {% for err in field.errors %}
-                               {{ err }} 
-                            {% endfor %}</span>
-                   {% endif %}
-                <br />{{ field }}
-                {% if field.name == 'message' %}
-                    <div id="msg_counter" style="text-align:right; padding:0 10px; color:#006699;font-size:90%;"></div>
-                {% endif %}
-            </td>
-        </tr>
-        
-    {% endfor %}
-        <tr>
-            <td style="border:none; text-align:right;padding:0 10px;">
-                    <a class="btn" href="{#% url 'view_tweet_console' %#}">Reset</a>
-                    &nbsp; <input type="submit" name="submit" value="Tweet!" class="btn btn-primary" />
-                    
-            </td>
-        </tr>
-      	</table>
-
-      	</form>
+    
 {% endblock %}
 
 

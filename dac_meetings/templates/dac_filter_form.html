@@ -1,0 +1,20 @@
+{% load url from future %}
+<form method="post" action="{% url 'view_dac_meeting_report' %}"  class="form-horizontal">
+        {% csrf_token %}
+               
+{% for field in dac_form %}
+            
+            {% if field.help_text %}({{ field.help_text|safe }}){% endif %}
+            {% if field.errors %}
+                    <br /><span class="text-error">
+                        {% for err in field.errors %}
+                           {{ err }} 
+                        {% endfor %}</span>
+               {% endif %}
+                {{ field }} {{ field.label }}
+    
+{% endfor %}
+                <a class="btn btn-info" href="{% url 'view_dac_meeting_report' %}">Reset</a>
+                &nbsp; <input type="submit" name="submit" value="Filter" class="btn btn-primary" />
+                
+</form>
