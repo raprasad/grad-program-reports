@@ -20,36 +20,6 @@
 </style>
 <script type="text/javascript">
 
-function shorten_url(){
-    // reset error message div
-    $('#url_shorten_err_msg').html('');
-    $('#url_shorten_err_msg').hide();
-    
-    lnk_val = $('#id_link').val();
-    if (lnk_val.length == 0){
-        return;
-    }
-    if (lnk_val.length < 20){
-        alert('The url doesn\'t need shortening');
-        return;
-    }
-    
-    url_str = "{#% url 'view_ajax_shorten_url' %#}?lnk=" + lnk_val;
-
-    jQuery.ajax({
-      url: url_str,
-      success: function(data) {
-          if (data.success == 1){
-              //alert('new url ' + data.short_url );   
-              $('#id_link').val(data.short_url);           
-          }else{
-              $('#url_shorten_err_msg').html(data.err_msg);
-              $('#url_shorten_err_msg').show();              
-          }
-      }
-    })
-}
-
     $(function () {
         $('#id_start_date').datepicker();
         $('#id_end_date').datepicker();
