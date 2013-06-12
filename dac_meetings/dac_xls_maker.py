@@ -31,7 +31,8 @@ def make_dac_report(sheet1, dac_meetings, **kwargs):
     column_attributes = [ ('Meeting Type', 'meeting_type', 20)
     ,('Status', 'status', 20)
     ,('Date', 'date', 10)
-    ,('Last Name', 'student', 15)
+    ,('MCB Year', 'student', 10)
+    ,('Last Name', '--skip--', 15)
     ,('First Name', '--skip--', 15)
     ,('Nominated for Prize', 'nominated_for_prize', 10)
     ,('Advisor', 'advisors', 25)
@@ -58,8 +59,9 @@ def make_dac_report(sheet1, dac_meetings, **kwargs):
                 continue
                 
             if attr == 'student':
-                sheet1.write(excel_row_num, col_idx,  dac.student.last_name, style_info_cell_wrap_on)  
-                sheet1.write(excel_row_num, col_idx+1,  dac.student.first_name, style_info_cell_wrap_on)  
+                sheet1.write(excel_row_num, col_idx, 'G%s' % dac.student.mcb_year, style_info_cell_wrap_on)  
+                sheet1.write(excel_row_num, col_idx+1,  dac.student.last_name, style_info_cell_wrap_on)  
+                sheet1.write(excel_row_num, col_idx+2,  dac.student.first_name, style_info_cell_wrap_on)  
             elif attr == 'date':
                 sheet1.write(excel_row_num, col_idx,  dac.date.strftime('%m/%d/%Y'), style_info_cell_wrap_on)  
             elif attr == 'nominated_for_prize':
