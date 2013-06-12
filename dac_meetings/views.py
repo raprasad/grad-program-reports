@@ -47,21 +47,20 @@ def view_dac_meeting_report(request):
             }
     dac_kwargs = {}
     
+    dac_meetings = None
+    num_dac_meetings = 0
     if request.method=='GET' and request.GET.has_key('start_date'):        
          dac_form = DacForm(request.GET)
          if dac_form.is_valid():
              dac_kwargs.update(dac_form.get_dac_kwargs())
+             dac_meetings =  get_dac_meetings(dac_kwargs)
+             num_dac_meetings = len(dac_meetings)
          else:
              print 'NOT valid!'
              lu.update({ 'ERR_form_not_valid' : True })
     else: 
          dac_form = DacForm()
 
-    dac_meetings =  get_dac_meetings(dac_kwargs)
-    if dac_meetings is not None:
-        num_dac_meetings = len(dac_meetings)
-    else:
-        num_dac_meetings = 0
         
     lu.update({ 'dac_meetings' :  dac_meetings\
             , 'num_dac_meetings' : num_dac_meetings\

@@ -27,6 +27,18 @@
                         {% endfor %}</span> <br />
                {% endif %}
                 {{ field }} 
+                    
+            {% if field.name == 'meeting_status' %}
+                <a id="lnk_uncheck_meeting_status">uncheck all</a>
+            {% endif %}
+            {% if field.name == 'g_year' %}
+                <a id="lnk_uncheck_g_year">uncheck all</a>
+            {% endif %}
+            {% if field.name == 'meeting_type' %}
+                <a id="lnk_uncheck_meeting_type">uncheck all</a>
+            {% endif %}
+            
+            
             {% if field.name == 'start_date' %}
             {% else %}{% if field.name == 'end_date' %}
             {% else %}

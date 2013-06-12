@@ -6,10 +6,9 @@
 <link href="{{ STATIC_URL }}mco_assets/datepicker/css/datepicker.css" rel="stylesheet">
 
 <script src="{{ STATIC_URL }}mco_assets/bootstrap/js/bootstrap.min.js"></script>
-<script src="{{ STATIC_URL }}mco_assets/bootstrap/js/bootstrap-limit.js"></script>
 <script src="{{ STATIC_URL }}mco_assets/datepicker/js/bootstrap-datepicker.js"></script>
 <style type="text/css">
-#tbl_dac_filter_form{width:640px;}
+#tbl_dac_filter_form{width:750px;}
 #tbl_dac_filter_form td{ vertical-align:top;
         padding:5px 10px;}
 
@@ -20,11 +19,37 @@
 </style>
 <script type="text/javascript">
 
+    uncheckall_text = 'Uncheck All';
+    checkall_text =  'Select All';
+    function set_checkbox_links(cbox_name, lnk_name){
+        $('a#' + lnk_name ).click(function(){
+            if ($(this).text() == uncheckall_text){            
+                $('input[id^="' + cbox_name + '"]').each(function() {
+                    $(this).prop('checked', false);
+                })
+               $(this).text(checkall_text);                
+            }else{
+                $('input[id^="' + cbox_name + '"]').each(function() {
+                    $(this).prop('checked', true);
+                })
+                $(this).text(uncheckall_text);                
+            }        
+        })
+        $('a#' + lnk_name).text(uncheckall_text);
+        
+    }
     $(function () {
         $('#id_start_date').datepicker();
         $('#id_end_date').datepicker();
-        //alert('blah');
+        
+        // meeting status
+        set_checkbox_links('id_meeting_status', 'lnk_uncheck_meeting_status');
+        set_checkbox_links('id_meeting_type', 'lnk_uncheck_meeting_type');
+        set_checkbox_links('id_g_year', 'lnk_uncheck_g_year');
+    
    });
+
+   //meeting_status
 
 </script>
 {% endblock %}
@@ -37,7 +62,7 @@
 	{% if dac_form %}
 	    {% include "dac_filter_form.html" %}
 	{% endif %}
-	{% if not ERR_form_not_valid %}
+	{% if dac_meetings and not ERR_form_not_valid %}
         {% include "dac_table_results.html" %}
     {% endif %}
 	
