@@ -46,7 +46,13 @@
             <td>{% if dm.nominated_for_prize %}<span class="label label-success">Yes</span> 
                 {% else %} <span class="label">No</span> 
                 {% endif %}</td>
-            <td>{{ dm.student.get_current_advisor }}</td>
+            <td>{% for advisor in dm.current_advisors %}
+                    {{ advisor }} ({{ advisor.department.abbreviation }}){% if not forloop.last %}<br />{% endif %}
+                    
+                {% empty %}
+                    (n/a)
+                {% endfor %}
+            </td>
             <td>{{ dm.student.status }}</td>
         </tr>
 {% empty %}

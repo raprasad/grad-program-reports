@@ -5,6 +5,7 @@ from django.db.models import Q
 from graduate_students.utils.view_util import get_basic_view_dict, get_not_logged_in_page
 from dissertation.models import *
 from dac_meetings.forms import DacForm
+from advisory_committee.models import Advisor as ThesisAdvisor
 from dac_meetings.dac_xls_maker import make_dac_report
 from datetime import datetime
 import xlwt
@@ -13,9 +14,27 @@ def get_dac_meetings(dac_kwarg_lookup):
     if dac_kwarg_lookup is None:
         return None
     
-    return RequiredMeeting.objects.select_related('student'\
+    # Get a list of student ids
+    dac_student_ids = RequiredMeeting.objects.values_list('student__id', flat=True\
+                             ).filter(**dac_kwarg_lookup)
+    
+    # Use this list to make a dict of { student.id : [advisor 1, advisor 2] }
+    advisor_lookup = {}                         
+    for advisor in ThesisAdvisor.objects.select_related('faculty_member', 'faculty_member__department', 'student'\
+                                    ).filter(student__id__in=dac_student_ids, active=True):
+        advisor_lookup.setdefault(advisor.student.id, []).append(advisor.faculty_member)
+        
+    # Retrieve the DAC meetings
+    dac_meetings = RequiredMeeting.objects.select_related('student', 'student__status', 'status'\
                          ).filter(**dac_kwarg_lookup\
-                         ).order_by('meeting_type', 'student__last_name')[:10]
+                         ).order_by('meeting_type', 'student__last_name')
+    
+    # Add the "current_advisors" attribute to each DAC
+    fmt_dac_meetings = []
+    for dac in dac_meetings:
+        dac.current_advisors = advisor_lookup.get(dac.student.id)
+        fmt_dac_meetings.append(dac)
+    return fmt_dac_meetings
     
 def view_dac_meeting_report(request):
     if not (request.user.is_authenticated and request.user.is_staff):
@@ -32,19 +51,18 @@ def view_dac_meeting_report(request):
          dac_form = DacForm(request.GET)
          if dac_form.is_valid():
              dac_kwargs.update(dac_form.get_dac_kwargs())
-             
-             #return HttpResponse('valid')
-             #tweet_form.send_tweet()
-             #return HttpResponseRedirect(reverse('view_tweet_success', args=()))
          else:
              print 'NOT valid!'
              lu.update({ 'ERR_form_not_valid' : True })
     else: 
          dac_form = DacForm()
 
-    dac_meetings = get_dac_meetings(dac_kwargs)
-    num_dac_meetings = dac_meetings.count()
-    
+    dac_meetings =  get_dac_meetings(dac_kwargs)
+    if dac_meetings is not None:
+        num_dac_meetings = len(dac_meetings)
+    else:
+        num_dac_meetings = 0
+        
     lu.update({ 'dac_meetings' :  dac_meetings\
             , 'num_dac_meetings' : num_dac_meetings\
             , 'dac_form' : dac_form\

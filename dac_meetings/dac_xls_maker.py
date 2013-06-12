@@ -34,7 +34,7 @@ def make_dac_report(sheet1, dac_meetings, **kwargs):
     ,('Last Name', 'student', 15)
     ,('First Name', '--skip--', 15)
     ,('Nominated for Prize', 'nominated_for_prize', 10)
-    ,('Advisor', 'advisors', 20)
+    ,('Advisor', 'advisors', 25)
     ,('Student Status', 'student_status', 20)
     ]
     
@@ -72,13 +72,8 @@ def make_dac_report(sheet1, dac_meetings, **kwargs):
                 sheet1.write(excel_row_num, col_idx,  '%s' % dac.student.status, style_info_cell_wrap_on)  
             elif attr == 'status':
                 sheet1.write(excel_row_num, col_idx,  '%s' % dac.status, style_info_cell_wrap_on)  
-            elif attr == 'advisors':
-                current_advisors = dac.student.get_current_advisors()
-                if current_advisors is None:
-                    sheet1.write(excel_row_num, col_idx,  'n/a', style_info_cell_wrap_on)  
-                    continue
-                
-                advisor_str = '\n'.join(map(lambda x: '%s (%s)' % (x.faculty_member, x.faculty_member.department.abbreviation), current_advisors))
+            elif attr == 'advisors':                
+                advisor_str = '\n'.join(map(lambda faculty_member: '%s (%s)' % (faculty_member, faculty_member.department.abbreviation), dac.current_advisors))
                 sheet1.write(excel_row_num, col_idx,  advisor_str, style_info_cell_wrap_on)
             else:
                 # default                
