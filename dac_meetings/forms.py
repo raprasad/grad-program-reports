@@ -3,13 +3,18 @@ from django.forms.widgets import RadioSelect, CheckboxSelectMultiple
 from django.forms.fields import DateField, ChoiceField, MultipleChoiceField
 from django.conf import settings
 from dissertation.models import *
+from student.models import GraduateStudentStatus
 #from dac_meetings.form_widget import MeetingTypeSelectMultiple
 from datetime import date, timedelta
 
 MEETING_TYPES = "G2Exam G3DAC G4DAC G5DAC G6DAC AdditionalDAC ThesisDefense".split()
 MEETING_TYPE_CHOICES = [ (x, x) for x in MEETING_TYPES]
 
-RequiredMeeting.objects.distinct().values_list('meeting_type', flat=True )
+MEETING_STATUS_CHOICES = [ (status.id, status.name) for status in RequiredMeetingStatus.objects.all()]
+MEETING_STATUSES = map(lambda x: x[0], MEETING_STATUS_CHOICES)
+
+STUDENT_STATUS_CHOICES = [ (status.id, status.name) for status in GraduateStudentStatus.objects.all()]
+STUDENT_STATUSES = map(lambda x: x[0], STUDENT_STATUS_CHOICES)
 
 def get_initial_date(end_date=False):
     today = date.today()
@@ -32,12 +37,25 @@ class DacForm(forms.Form):
                     , initial=MEETING_TYPES\
                     , choices=MEETING_TYPE_CHOICES\
                     )
-    
+                    
+    meeting_status = forms.MultipleChoiceField(required=True\
+                    , widget=CheckboxSelectMultiple()\
+                    , initial=MEETING_STATUSES\
+                    , choices=MEETING_STATUS_CHOICES\
+                            )
    
+    student_status = forms.MultipleChoiceField(required=True\
+                    , widget=CheckboxSelectMultiple()\
+                    , initial=STUDENT_STATUSES\
+                    , choices=STUDENT_STATUS_CHOICES\
+                            )
+
     def get_dac_kwargs(self):
         
         
         dac_kwargs = { 'meeting_type__in' : self.cleaned_data.get('meeting_type', None)\
+                , 'status__in' : self.cleaned_data.get('meeting_status')
+                , 'student__status__in' : self.cleaned_data.get('student_status')
                 , 'date__gte' : self.cleaned_data.get('start_date')
                 , 'date__lte' : self.cleaned_data.get('end_date')
          }
