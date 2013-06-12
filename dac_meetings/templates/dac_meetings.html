@@ -3,8 +3,21 @@
 
 {% block additional_header_info %}
 {{ block.super }}
+<link href="{{ STATIC_URL }}mco_assets/datepicker/css/datepicker.css" rel="stylesheet">
+
 <script src="{{ STATIC_URL }}mco_assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="{{ STATIC_URL }}mco_assets/bootstrap/js/bootstrap-limit.js"></script>
+<script src="{{ STATIC_URL }}mco_assets/datepicker/js/bootstrap-datepicker.js"></script>
+<style type="text/css">
+#tbl_dac_filter_form{width:440px;}
+#tbl_dac_filter_form td{ vertical-align:top;
+        padding:5px 10px;}
+
+#tbl_dac_filter_form ul {list-style-type:none;
+     padding:0;
+     margin:5px;
+     }
+</style>
 <script type="text/javascript">
 
 function shorten_url(){
@@ -38,6 +51,8 @@ function shorten_url(){
 }
 
     $(function () {
+        $('#id_start_date').datepicker();
+        $('#id_end_date').datepicker();
         //alert('blah');
    });
 
@@ -47,62 +62,16 @@ function shorten_url(){
 
 {% block main_container %}
 
-
-	{% if TWEET_SUCCESS %}
-	 <div class="alert alert-success">
-           Your tweet has been sent!  
-    </div>
-	{% endif %}
+{#{QUERY_STRING}#}
 	
 	{% if dac_form %}
 	    {% include "dac_filter_form.html" %}
 	{% endif %}
+	{% if not ERR_form_not_valid %}
+        {% include "dac_table_results.html" %}
+    {% endif %}
 	
-	<table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Meeting Type</th>
-            	<th>Date of<br />Meeting</th>
-            	<th>Last Name</th>
-            	<th>First Name</th>
-            	<th>Nominated<br /> for<br />Prize</th>
-            	<th>Advisor</th>
-            	<th>Student<br />Status</th>
-            </tr>
-        </thead>
-        <tbody>
-	{% for dm in dac_meetings %}
-	    {% ifchanged dm.meeting_type %}
-	        {% if not forloop.first %}
-            <tr>
-	            <td colspan="8">&nbsp;</td>
-            </tr>
-            {% endif %}
-	    {% endifchanged %}
-	        <tr>
-	            <td>{{ forloop.counter }}</td>
-	            <td>{{ dm.meeting_type }}</td>
-	            <td><p class="text-right">{{ dm.date|date:"n/d/Y" }}</p></td>
-	            <td>{{ dm.student.last_name }}</td>
-	            <td>{{ dm.student.first_name }}</td>
-	            <td>{% if dm.nominated_for_prize %}<span class="label label-success">Yes</span> 
-	                {% else %} <span class="label">No</span> 
-	                {% endif %}</td>
-	            <td>{{ dm.student.get_current_advisor }}</td>
-	            <td>{{ dm.student.status }}</td>
-	        </tr>
-	{% empty %}
-	        <tr>
-                <td colspan="8">
-                    <div class="alert alert-error">No DAC meetings found for this time period.</div>
-                </td>
-            </tr>
-	{% endfor %}
-        </tbody>
-	</table>
-	
-    
+    {% include "sql_query_debug.html" %}
 {% endblock %}
 
 

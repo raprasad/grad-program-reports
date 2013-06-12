@@ -1,20 +1,43 @@
 {% load url from future %}
-<form method="post" action="{% url 'view_dac_meeting_report' %}"  class="form-horizontal">
-        {% csrf_token %}
-               
+
+{% if ERR_form_not_valid %}
+<div class="alert alert-error">
+    Please check the error below.
+</div>
+{% endif %}
+<form method="get" action="{% url 'view_dac_meeting_report' %}"  class="form-horizontal">
+        {#% csrf_token %#}
+    <table id="tbl_dac_filter_form" class="table table-bordered">
+    <tr>
+        
 {% for field in dac_form %}
-            
+           
+            {% if field.name == 'end_date' or field.name == 'nominated_for_prize' %}
+                <br /> <br />   
+            {% else %}
+            <td>
+            {% endif %}
+                
+            {{ field.label }}<br />
             {% if field.help_text %}({{ field.help_text|safe }}){% endif %}
             {% if field.errors %}
                     <br /><span class="text-error">
                         {% for err in field.errors %}
                            {{ err }} 
-                        {% endfor %}</span>
+                        {% endfor %}</span> <br />
                {% endif %}
-                {{ field }} {{ field.label }}
-    
+                {{ field }} 
+            {% if field.name == 'start_date' %}
+            {% else %}{% if field.name == 'end_date' %}
+            {% else %}
+                </td>
+            {% endif %}{% endif %}
 {% endfor %}
-                <a class="btn btn-info" href="{% url 'view_dac_meeting_report' %}">Reset</a>
-                &nbsp; <input type="submit" name="submit" value="Filter" class="btn btn-primary" />
+    </tr>
+    <tr>
+        <td colspan="4" style="text-align:right;">        <a class="btn" href="{% url 'view_dac_meeting_report' %}">Reset</a>
+                &nbsp; <input type="submit" name="submit" value="List DACs" class="btn btn-primary" /></td>
+    </tr>
+</table>
                 
 </form>

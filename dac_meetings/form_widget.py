@@ -1,3 +1,4 @@
+"""
 from django.utils.safestring import mark_safe
 from itertools import chain
 from django.utils.encoding import StrAndUnicode, force_unicode
@@ -11,9 +12,9 @@ class MeetingTypeSelectMultiple(SelectMultiple):
         if value is None: value = []
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs, name=name)
-        output = ["""<div class="control-group">
-          <label class="control-label" for="checkboxes">Meeting Types</label>
-          <div class="controls">"""]# [u'<ul>']
+        output = ['''<div class="control-group">
+          <!--label class="control-label" for="checkboxes">Meeting Types</label-->
+          <div class="controls">''']# [u'<ul>']
         # Normalize to strings
         str_values = set([force_unicode(v) for v in value])
         for i, (option_value, option_label) in enumerate(chain(self.choices, choices)):
@@ -30,7 +31,7 @@ class MeetingTypeSelectMultiple(SelectMultiple):
             rendered_cb = cb.render(name, option_value)
             option_label = conditional_escape(force_unicode(option_label))
             output.append(u'<label class="checkbox"%s>%s %s</label>' % (label_for, rendered_cb, option_label))
-        output.append(u'</div></div')
+        output.append(u'</div></div>')
         return mark_safe(u'\n'.join(output))
 
     def id_for_label(self, id_):
@@ -38,19 +39,5 @@ class MeetingTypeSelectMultiple(SelectMultiple):
         if id_:
             id_ += '_0'
         return id_
-
-class CheckboxSelectMultiple(CheckboxSelectMultiple):
-    """Simply adds a class to the ul element, which allows the CSS to
-select it."""
-    def render(self, *args, **kwargs):
-        output = super(CheckboxSelectMultiple, self).render(*args,
-**kwargs)
-        return mark_safe(output.replace(u'<ul>', u'<ul class="checkbox-select">'))
-
-"""
-<label class="checkbox" for="checkboxes-0">
-  <input name="checkboxes" id="checkboxes-0" value="G2 Exam" type="checkbox">
-  G2 Exam
-</label>
 
 """
