@@ -7,15 +7,16 @@
     <thead>
         <tr>
             <th>#</th>
-            <th>Meeting Type</th>
-            <th>Status</th>
-        	<th>Date of<br />Meeting</th>
-        	<th>MCB Year</th>
         	<th>Last Name</th>
         	<th>First Name</th>
-        	<th>Nominated<br /> for<br />Prize</th>
-        	<th>Advisor</th>
+        	<th>MCB Year</th>
         	<th>Student<br />Status</th>
+        	<th>Advisor</th>
+
+            <th>Meeting Type</th>
+            <th>Meeting Status</th>
+        	<th>Date of<br />Meeting</th>
+        	<th>Nominated<br /> for<br />Prize</th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +30,19 @@
     {% endifchanged %}
         <tr>
             <td>{{ forloop.counter }}</td>
+            <td><a href="{% url 'admin:student_graduatestudentexammeetingview_change' dm.student.id %}">{{ dm.student.last_name }}</a></td>
+            <td>{{ dm.student.first_name }}</td>
+            <td><p class="text-center">G{{ dm.student.mcb_year }}</p></td>
+            <td>{{ dm.student.status }}</td>
+            
+            <td>{% for advisor in dm.current_advisors %}
+                    {{ advisor }} ({{ advisor.department.abbreviation }}){% if not forloop.last %}<br />{% endif %}
+                    
+                {% empty %}
+                    (n/a)
+                {% endfor %}
+            </td>
+            
             <td>{{ dm.meeting_type }}</td>
             <td>{% if dm.passed %}
                     <span class="label label-success">{{ dm.status }}</span> 
@@ -41,21 +55,13 @@
                         <span class="label btn-warning">{{ dm.status }}</span> 
                     {% endif %}{% endif %}
                 {% endif %}
+            </td>
             <td><p class="text-right">{{ dm.date|date:"n/d/Y" }}</p></td>
-            <td><p class="text-center">G{{ dm.student.mcb_year }}</p></td>
-            <td><a href="{% url 'admin:student_graduatestudentexammeetingview_change' dm.student.id %}">{{ dm.student.last_name }}</a></td>
-            <td>{{ dm.student.first_name }}</td>
+
             <td>{% if dm.nominated_for_prize %}<span class="label label-success">Yes</span> 
                 {% else %} <span class="label">No</span> 
                 {% endif %}</td>
-            <td>{% for advisor in dm.current_advisors %}
-                    {{ advisor }} ({{ advisor.department.abbreviation }}){% if not forloop.last %}<br />{% endif %}
-                    
-                {% empty %}
-                    (n/a)
-                {% endfor %}
-            </td>
-            <td>{{ dm.student.status }}</td>
+
         </tr>
 {% empty %}
         <tr>

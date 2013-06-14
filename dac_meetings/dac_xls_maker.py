@@ -28,15 +28,20 @@ def make_dac_report(sheet1, dac_meetings, **kwargs):
                   
 
     #   (header label, attribute, width)
-    column_attributes = [ ('Meeting Type', 'meeting_type', 20)
-    ,('Status', 'status', 20)
-    ,('Date', 'date', 10)
-    ,('MCB Year', 'student', 10)
-    ,('Last Name', '--skip--', 15)
+    column_attributes = [ 
+     
+     ('Last Name', 'student', 15)
     ,('First Name', '--skip--', 15)
-    ,('Nominated for Prize', 'nominated_for_prize', 10)
+    ,('MCB Year', '--skip--', 10)
+    ,('Student Status', '--skip--', 20)
+
     ,('Advisor', 'advisors', 25)
-    ,('Student Status', 'student_status', 20)
+
+    , ('Meeting Type', 'meeting_type', 20)
+    ,('Meeting Status', 'status', 20)
+    ,('Date', 'date', 10)
+    
+    ,('Nominated for Prize', 'nominated_for_prize', 10)
     ]
     
  
@@ -59,21 +64,24 @@ def make_dac_report(sheet1, dac_meetings, **kwargs):
                 continue
                 
             if attr == 'student':
-                sheet1.write(excel_row_num, col_idx, 'G%s' % dac.student.mcb_year, style_info_cell_wrap_on)  
-                sheet1.write(excel_row_num, col_idx+1,  dac.student.last_name, style_info_cell_wrap_on)  
-                sheet1.write(excel_row_num, col_idx+2,  dac.student.first_name, style_info_cell_wrap_on)  
+                sheet1.write(excel_row_num, col_idx,  dac.student.last_name, style_info_cell_wrap_on)  
+                sheet1.write(excel_row_num, col_idx+1,  dac.student.first_name, style_info_cell_wrap_on)  
+                sheet1.write(excel_row_num, col_idx+2, 'G%s' % dac.student.mcb_year, style_info_cell_wrap_on)  
+                sheet1.write(excel_row_num, col_idx+3,  '%s' % dac.student.status, style_info_cell_wrap_on)  
+                
             elif attr == 'date':
                 sheet1.write(excel_row_num, col_idx,  dac.date.strftime('%m/%d/%Y'), style_info_cell_wrap_on)  
             elif attr == 'nominated_for_prize':
+            
                 if dac.nominated_for_prize:
                     val = 'Yes'
                 else:
                     val = 'No'
                 sheet1.write(excel_row_num, col_idx,  val, style_info_cell_wrap_on)  
-            elif attr == 'student_status':
-                sheet1.write(excel_row_num, col_idx,  '%s' % dac.student.status, style_info_cell_wrap_on)  
+            
             elif attr == 'status':
                 sheet1.write(excel_row_num, col_idx,  '%s' % dac.status, style_info_cell_wrap_on)  
+            
             elif attr == 'advisors':                
                 advisor_str = '\n'.join(map(lambda faculty_member: '%s (%s)' % (faculty_member, faculty_member.department.abbreviation), dac.current_advisors))
                 sheet1.write(excel_row_num, col_idx,  advisor_str, style_info_cell_wrap_on)
