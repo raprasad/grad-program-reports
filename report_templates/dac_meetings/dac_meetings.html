@@ -60,10 +60,10 @@
 {#{QUERY_STRING}#}
 	
 	{% if dac_form %}
-	    {% include "dac_filter_form.html" %}
+	    {% include "dac_meetings/dac_filter_form.html" %}
 	{% endif %}
 	{% if dac_meetings and not ERR_form_not_valid %}
-        {% include "dac_table_results.html" %}
+        {% include "dac_meetings/dac_table_results.html" %}
     {% endif %}
 	
     {% include "sql_query_debug.html" %}

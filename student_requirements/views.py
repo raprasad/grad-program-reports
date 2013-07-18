@@ -36,15 +36,18 @@ def get_dac_meetings(dac_kwarg_lookup):
         fmt_dac_meetings.append(dac)
     return fmt_dac_meetings
     
-def view_dac_meeting_report(request):
+def view_requirements_report(request):
     if not (request.user.is_authenticated and request.user.is_staff):
         return HttpResponseRedirect(get_not_logged_in_page())
     
-    lu = { 'DAC_MEETING_REPORT_PAGE' : True \
-                  , 'page_title' : 'DAC Meeting Report'\
+    lu = { 'STUDENT_REQUIREMENTS_PAGE' : True \
+                  , 'page_title' : 'Student Reports'\
                   , 'RM_STATUS_SCHEDULED' : RM_STATUS_SCHEDULED
                   , 'RM_FAIL_STATUSES' : RM_FAIL_STATUSES
             }
+    
+    return HttpResponse('view_basic_student_report')
+    
     dac_kwargs = {}
     
     dac_meetings = None
@@ -75,7 +78,7 @@ def view_dac_meeting_report(request):
     
     
     
-def view_dac_meeting_report_spreadsheet(request):
+def view_basic_student_report_spreadsheet(request):
     if not (request.user.is_authenticated and request.user.is_staff):
         return HttpResponseRedirect(get_not_logged_in_page())
     
