@@ -49,6 +49,7 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
                 
+              {% comment %}
               <li{% if STUDENT_REQUIREMENTS_PAGE %} class="active"{% endif %} class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown">Student<b class="caret"></b></a>
                   <ul class="dropdown-menu">
@@ -57,6 +58,7 @@
                     <li><a href="#">Electives</a></li>
                   </ul>
                 </li>
+                {% endcomment %}
                 <li{% if FACULTY_INFO_PAGE %} class="active"{% endif %} class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Faculty<b class="caret"></b></a>
                     <ul class="dropdown-menu">
