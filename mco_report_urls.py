@@ -9,6 +9,8 @@ urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^dac-meetings/', include('dac_meetings.urls')),
 
+    url(r'^faculty/', include('faculty_info.urls')),
+
     url(r'^requirements/', include('student_requirements.urls')),
     
 )

@@ -57,6 +57,12 @@
                     <li><a href="#">Electives</a></li>
                   </ul>
                 </li>
+                <li{% if FACULTY_INFO_PAGE %} class="active"{% endif %} class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Faculty<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                      <li {% if FACULTY_CONTACT_INFO %} class="active"{% endif %}><a href="{% url 'view_faculty_contacts' %}">Contact Information</a></li>
+                    </ul>
+                  </li>
                 <li{% if DAC_MEETING_REPORT_PAGE %} class="active"{% endif %}><a href="{% url 'view_dac_meeting_report' %}">DAC Meetings</a></li>
                 
                 <li class="active"><a href="{% url 'view_homepage' %}">(home)</a></li>
