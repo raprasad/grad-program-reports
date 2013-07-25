@@ -1,6 +1,6 @@
 {% load url from future %}
 <p>
-    <strong>Number of Faculty Members:</strong>: {{ num_faculty_members }}
+    <strong>Number of Faculty Members:</strong> {{ num_faculty_members }}
 {% if num_faculty_members > 0 %}&nbsp; <a href="{#% url 'view_dac_meeting_report_spreadsheet' %#}{% if QUERY_STRING %}?{{ QUERY_STRING }}{% endif %}"><span class="label label-success">download as Excel <i class="icon-download icon-white"></i> </span></a> {% endif %}
 </p>
 <table class="table table-bordered table-hover">
@@ -23,12 +23,11 @@
     <tbody>
 {% for fm in faculty_members %}
     {% ifchanged fm.department %}
-        {% if not forloop.first %}
         <tr>
-            <td colspan="10"><strong>{{ fm.department }}</strong></td>
+            <td colspan="10"><br /><br /><strong>{{ fm.department }}</strong></td>
         </tr>
-        {% endif %}
     {% endifchanged %}
+    
         <tr>
             <td>{{ forloop.counter }}</td>
             <td>{% if fm.member_of_training_grant %}

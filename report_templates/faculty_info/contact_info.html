@@ -43,9 +43,8 @@
         $('#id_end_date').datepicker();
         
         // meeting status
-        set_checkbox_links('id_meeting_status', 'lnk_uncheck_meeting_status');
-        set_checkbox_links('id_meeting_type', 'lnk_uncheck_meeting_type');
-        set_checkbox_links('id_g_year', 'lnk_uncheck_g_year');
+        set_checkbox_links('id_faculty_status', 'lnk_uncheck_faculty_status');
+        set_checkbox_links('id_department', 'lnk_uncheck_department');
     
    });
 
@@ -59,11 +58,11 @@
 
 {#{QUERY_STRING}#}
 	
-	{% comment %}
-	{% if dac_form %}
-	    {% include "dac_meetings/dac_filter_form.html" %}
+	
+	{% if contact_form %}
+	    {% include "faculty_info/contact_filter_form.html" %}
 	{% endif %}
-	{% endcomment %}
+	{% comment %}{% endcomment %}
 	
 	{% if faculty_members and not ERR_form_not_valid %}
         {% include "faculty_info/contact_table.html" %}

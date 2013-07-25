@@ -1,0 +1,49 @@
+{% load url from future %}
+
+{% if ERR_form_not_valid %}
+<div class="alert alert-error">
+    Please check the error below.
+</div>
+{% endif %}
+<form method="get" action="{% url 'view_faculty_contacts' %}"  class="form-horizontal">
+        {#% csrf_token %#}
+    <table id="tbl_dac_filter_form" class="table table-bordered">
+    <tr>
+        
+{% for field in contact_form %}
+           
+           
+            <td>
+                
+            {{ field.label }}<br />
+            {% if field.help_text %}({{ field.help_text|safe }}){% endif %}
+            {% if field.errors %}
+                    <br /><span class="text-error">
+                        {% for err in field.errors %}
+                           {{ err }} 
+                        {% endfor %}</span> <br />
+               {% endif %}
+                {{ field }} 
+                    
+            {% if field.name == 'department' %}
+                <a id="lnk_uncheck_department">uncheck all</a>
+            {% endif %}
+            {% if field.name == 'faculty_status' %}
+                <a id="lnk_uncheck_faculty_status">uncheck all</a>
+            {% endif %}
+            
+            </td>
+            
+            {% if field.name == 'start_date' %}
+            {% else %}{% if field.name == 'end_date' %}
+            {% else %}
+            {% endif %}{% endif %}
+{% endfor %}
+    </tr>
+    <tr>
+        <td colspan="4" style="text-align:right;">        <a class="btn" href="{% url 'view_faculty_contacts' %}">Reset</a>
+                &nbsp; <input type="submit" name="submit" value="List Faculty" class="btn btn-primary" /></td>
+    </tr>
+</table>
+                
+</form>
