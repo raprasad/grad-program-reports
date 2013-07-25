@@ -1,15 +1,19 @@
 {% load url from future %}
 <p>
     <strong>Number of Faculty Members:</strong> {{ num_faculty_members }}
-{% if num_faculty_members > 0 %}&nbsp; <a href="{#% url 'view_dac_meeting_report_spreadsheet' %#}{% if QUERY_STRING %}?{{ QUERY_STRING }}{% endif %}"><span class="label label-success">download as Excel <i class="icon-download icon-white"></i> </span></a> {% endif %}
+{% if num_faculty_members > 0 %}&nbsp; 
+    {% comment %}
+<a href="{#% url 'view_dac_meeting_report_spreadsheet' %#}{% if QUERY_STRING %}?{{ QUERY_STRING }}{% endif %}"><span class="label label-success">download as Excel <i class="icon-download icon-white"></i> </span></a> 
+    {% endcomment %}
+{% endif %}
 </p>
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
             <th>#</th>
-            <th>MCO?</th>
+            <th>is MCO?</th>
         	<th>Name</th>
-        	<th>Email</th>
+        	<th>Email<br />(website)</th>
         	
         	<th>Phone</th>
         	<th>Office</th>
@@ -40,7 +44,11 @@
                 <br /><a href="{{ fm.get_admin_link }}">(e)</a></td>
     
             <td><a href="mailto:{{ fm.email }}">{{ fm.email }}</a>
-                {% if fm.second_email %}<br /><a href="mailto:{{ fm.second_email }}">{{ fm.second_email }}</a>{% endif %}</td>
+                {% if fm.second_email %}<br /><a href="mailto:{{ fm.second_email }}">{{ fm.second_email }}</a>{% endif %}
+                {% if fm.website %}
+                    <br />(<a href="{{ fm.website }}">website</a>)
+                {% endif %}
+                </td>
             
             <td>{{ fm.phone }}</td>
             

@@ -23,9 +23,14 @@
                            {{ err }} 
                         {% endfor %}</span> <br />
                {% endif %}
+               
+            {% if field.name == 'department' %}
+                <div id="id_div_dept_checkboxes">
+            {% endif %}
                 {{ field }} 
                     
             {% if field.name == 'department' %}
+                </div>
                 <a id="lnk_uncheck_department">uncheck all</a>
             {% endif %}
             {% if field.name == 'faculty_status' %}

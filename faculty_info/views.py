@@ -28,7 +28,7 @@ def view_faculty_contacts(request):
     
     lu = { 'FACULTY_INFO_PAGE' : True \
             , 'FACULTY_CONTACT_INFO' : True\
-            , 'page_title' : 'Faculty Contacts (active faculty)'\
+            , 'page_title' : 'Faculty Contacts'\
          }
     
     

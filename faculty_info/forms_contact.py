@@ -16,27 +16,16 @@ def get_mco_faculty_depts():
     mco_dept_ids = FacultyMember.objects.filter(is_active=True\
                             , member_of_training_grant=True\
                         ).values_list('department__id', flat=True)
-    print 'mco_dept_ids', mco_dept_ids
     selected_department_choices = map(lambda x: x.id, Department.objects.filter(id__in=mco_dept_ids))
-    print 'selected_department_choices', selected_department_choices
-    #selected_department_choices = [ (dept.id, '%s' % dept ) for dept in Department.objects.filter(id__in=mco_dept_ids)]
-    
     return selected_department_choices
     
 FACULTY_STATUS_CHOICES = [ (status.id, status.name) for status in FacultyStatus.objects.all()]
 FACULTY_STATUS_SELECTED = map(lambda x: x.id, FacultyStatus.objects.filter(is_active_status=True))
 
-#DEPARTMENTS_SELECTED = range(1, get_max_gyear()+1)
 DEPARTMENT_CHOICES = [ (dept.id, '%s' % dept ) for dept in Department.objects.all()]
 DEPARTMENT_DEFAULT_SETTIGNGS = get_mco_faculty_depts()
-#GraduateStudent.objects.all().aggregate(Max('mcb_year'))
 
-def get_initial_date(end_date=False):
-    if end_date:
-        return (date.today() + timedelta(days=365)).strftime('%m/%d/%Y')
-        
-    return '01/01/2000'#(today + timedelta(days=-180)).strftime('%m/%d/%Y')
-    
+
 class ContactForm(forms.Form):
 
     is_mco = forms.BooleanField(label="MCO faculty only"\
@@ -51,7 +40,7 @@ class ContactForm(forms.Form):
                     )
 
     department = forms.MultipleChoiceField(required=True\
-                    , widget=CheckboxSelectMultiple()\
+                    , widget=CheckboxSelectMultiple(attrs={'size': 12})\
                     , choices=DEPARTMENT_CHOICES\
                     , initial=DEPARTMENT_DEFAULT_SETTIGNGS\
                     )
