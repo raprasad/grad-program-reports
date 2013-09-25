@@ -35,7 +35,7 @@ def get_dac_meetings(dac_kwarg_lookup):
     # Add the "current_advisors" attribute to each DAC
     fmt_dac_meetings = []
     for dac in dac_meetings:
-        dac.current_advisors = advisor_lookup.get(dac.student.id)
+        dac.current_advisors = advisor_lookup.get(dac.student.id, [])
         fmt_dac_meetings.append(dac)
     return fmt_dac_meetings
     
