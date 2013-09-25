@@ -36,7 +36,9 @@
             <td>{{ dm.student.status }}</td>
             
             <td>{% for advisor in dm.current_advisors %}
-                    {{ advisor }} ({{ advisor.department.abbreviation }}){% if not forloop.last %}<br />{% endif %}
+                    {{ advisor }} ({{ advisor.department.abbreviation }}{% if advisor.second_department %} / {{ advisor.second_department.abbreviation }}{% endif %}){% if not forloop.last %}<br />{% endif %}
+                    
+                    
                     
                 {% empty %}
                     (n/a)

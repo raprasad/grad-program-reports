@@ -29,6 +29,9 @@ def get_dac_meetings(dac_kwarg_lookup):
                          ).filter(**dac_kwarg_lookup\
                          ).order_by('meeting_type', 'student__last_name')
     
+    # For dissertations, add the has paper
+    
+    
     # Add the "current_advisors" attribute to each DAC
     fmt_dac_meetings = []
     for dac in dac_meetings:

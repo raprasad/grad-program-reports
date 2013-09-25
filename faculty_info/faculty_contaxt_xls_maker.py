@@ -68,7 +68,12 @@ def make_faculty_contact_report(sheet1, faculty_members, **kwargs):
                 sheet1.write(excel_row_num, col_idx, val, style_info_cell_wrap_on)  
 
             elif attr == 'department':
-                sheet1.write(excel_row_num, col_idx, '%s' % fm.department, style_info_cell_wrap_on)  
+                if fm.second_department:
+                    dept_text = '%s\n\n%s' % (fm.department, fm.second_department)
+                else:
+                    dept_text = '%s' % (fm.department)
+                    
+                sheet1.write(excel_row_num, col_idx, dept_text, style_info_cell_wrap_on)  
       
             elif attr.startswith('faculty_assistant.'):
                 if not fm.faculty_assistant:

@@ -42,6 +42,10 @@
                 {% endif %}
             </td>
             <td><a href="{% url 'view_faculty_profile' fm.id_hash %}">{{ fm.last_name }}, {{ fm.first_name }}</a>
+            
+                {% if fm.second_department %}
+                    <br />({{ fm.department.abbreviation }} / {{ fm.second_department.abbreviation }})
+                {% endif %}
                 <br /><a href="{{ fm.get_admin_link }}">(e)</a></td>
             <td>{{ fm.status }}</td>
             <td><a href="mailto:{{ fm.email }}">{{ fm.email }}</a>

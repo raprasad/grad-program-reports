@@ -7,7 +7,22 @@ from django.conf import settings
 #from django.contrib.sites.models import Site
 
     
+def fmt_faculty_member(faculty_member):
+    if faculty_member is None:
+        return ''
+    
+    if faculty_member.second_department:
+        fm_text = '%s (%s / %s)' % (faculty_member\
+                , faculty_member.department.abbreviation\
+                , faculty_member.second_department.abbreviation\
+                
+                )
+    else:
+        fm_text = '%s (%s)' % (faculty_member, faculty_member.department.abbreviation)
 
+    return fm_text
+
+        
 def get_student_link(gs):
     #link = 'HYPERLINK("http://stackoverflow.com/"; "SO")'
     #    sheet.write(0, 0, Formula(link))
@@ -83,7 +98,7 @@ def make_dac_report(sheet1, dac_meetings, **kwargs):
                 sheet1.write(excel_row_num, col_idx,  '%s' % dac.status, style_info_cell_wrap_on)  
             
             elif attr == 'advisors':                
-                advisor_str = '\n'.join(map(lambda faculty_member: '%s (%s)' % (faculty_member, faculty_member.department.abbreviation), dac.current_advisors))
+                advisor_str = '\n'.join(map(lambda faculty_member: fmt_faculty_member(faculty_member), dac.current_advisors))
                 sheet1.write(excel_row_num, col_idx,  advisor_str, style_info_cell_wrap_on)
             else:
                 # default                
