@@ -1,7 +1,7 @@
 {% load url from future %}
 
 {% if ERR_form_not_valid %}
-<div class="alert alert-error">
+<div class="alert alert-danger" style="width:400px;">
     Please check the error below.
 </div>
 {% endif %}
@@ -18,7 +18,7 @@
             {{ field.label }}<br />
             {% if field.help_text %}({{ field.help_text|safe }}){% endif %}
             {% if field.errors %}
-                    <br /><span class="text-error">
+                    <br /><span class="text-danger">
                         {% for err in field.errors %}
                            {{ err }} 
                         {% endfor %}</span> <br />

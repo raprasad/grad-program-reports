@@ -43,11 +43,14 @@ def view_dac_meeting_report(request):
     if not (request.user.is_authenticated and request.user.is_staff):
         return HttpResponseRedirect(get_not_logged_in_page())
     
-    lu = { 'DAC_MEETING_REPORT_PAGE' : True \
+    lu = get_basic_view_dict(request)
+    
+    lu.update( { 'DAC_MEETING_REPORT_PAGE' : True \
+                  , 'is_dac_meeting_page' : True\
                   , 'page_title' : 'DAC Meeting Report'\
                   , 'RM_STATUS_SCHEDULED' : RM_STATUS_SCHEDULED
                   , 'RM_FAIL_STATUSES' : RM_FAIL_STATUSES
-            }
+            })
     dac_kwargs = {}
     
     dac_meetings = None

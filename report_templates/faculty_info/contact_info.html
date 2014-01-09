@@ -1,4 +1,4 @@
-{% extends "report_base.html" %}
+{% extends "base.html" %}
 {% load url from future %}
 
 {% block additional_header_info %}
@@ -8,6 +8,8 @@
 <script src="{{ STATIC_URL }}mco_assets/bootstrap/js/bootstrap.min.js"></script>
 <script src="{{ STATIC_URL }}mco_assets/datepicker/js/bootstrap-datepicker.js"></script>
 <style type="text/css">
+label{font-weight:normal;}
+
 #tbl_dac_filter_form{width:750px;}
 #tbl_dac_filter_form td{ vertical-align:top;
         padding:5px 10px;}
@@ -55,7 +57,7 @@
 {% endblock %}
 
 
-{% block main_container %}
+{% block report_content %}
 
 {#{QUERY_STRING}#}
 	
@@ -68,7 +70,12 @@
 	{% if faculty_members and not ERR_form_not_valid %}
         {% include "faculty_info/contact_table.html" %}
     {% endif %}
-	
+    
+    {% if no_faculty_members_found %}
+	    <div class="alert alert-warning" style="width:400px;">
+            No faculty members found for this search.
+        </div>
+	{% endif %}
     {% include "sql_query_debug.html" %}
 {% endblock %}
 

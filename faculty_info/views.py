@@ -28,16 +28,19 @@ def view_faculty_contacts(request):
     if not (request.user.is_authenticated and request.user.is_staff):
         return HttpResponseRedirect(get_not_logged_in_page())
     
-    lu = { 'FACULTY_INFO_PAGE' : True \
+    lu = get_basic_view_dict(request)
+    
+    lu.update( { 'FACULTY_INFO_PAGE' : True \
             , 'FACULTY_CONTACT_INFO' : True\
             , 'page_title' : 'Faculty Contacts'\
-         }
+         })
     
     
     faculty_member_kwargs = {}
 
     faculty_members = None
     num_faculty_members = 0
+    no_faculty_members_found = False
     
     if request.method=='GET' and request.GET.has_key('faculty_status'):        
         contact_form = ContactForm(request.GET)
@@ -45,6 +48,8 @@ def view_faculty_contacts(request):
             faculty_member_kwargs.update(contact_form.get_faculty_info_kwargs())
             faculty_members = get_faculty_members(faculty_member_kwargs)
             num_faculty_members = len(faculty_members)
+            if num_faculty_members == 0:
+                no_faculty_members_found = True
         else:
             print 'NOT valid!'
             lu.update({ 'ERR_form_not_valid' : True })
@@ -54,6 +59,7 @@ def view_faculty_contacts(request):
        
     lu.update({ 'faculty_members' :  faculty_members\
             , 'num_faculty_members' : num_faculty_members\
+            , 'no_faculty_members_found' : no_faculty_members_found
             , 'contact_form' : contact_form\
             , 'QUERY_STRING' : request.META['QUERY_STRING'] 
         })
