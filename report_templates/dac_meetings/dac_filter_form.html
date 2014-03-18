@@ -21,7 +21,7 @@
             {{ field.label }}<br />
             {% if field.help_text %}({{ field.help_text|safe }}){% endif %}
             {% if field.errors %}
-                    <br /><span class="text-error">
+                    <br /><span class="text-warning">
                         {% for err in field.errors %}
                            {{ err }} 
                         {% endfor %}</span> <br />
