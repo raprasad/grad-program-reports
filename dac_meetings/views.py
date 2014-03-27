@@ -46,7 +46,7 @@ def view_dac_meeting_report(request):
     lu = get_basic_view_dict(request)
     
     lu.update( { 'DAC_MEETING_REPORT_PAGE' : True \
-                  , 'is_dac_meeting_page' : True\
+                  , 'IS_DAC_MEETING_PAGE' : True\
                   , 'page_title' : 'DAC Meeting Report'\
                   , 'RM_STATUS_SCHEDULED' : RM_STATUS_SCHEDULED
                   , 'RM_FAIL_STATUSES' : RM_FAIL_STATUSES
